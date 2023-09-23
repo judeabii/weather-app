@@ -3,7 +3,8 @@ import requests
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
-port = int(os.environ.get("PORT", 8000))
+port = os.environ['PORT']
+
 
 @app.route('/')
 def get_location():
