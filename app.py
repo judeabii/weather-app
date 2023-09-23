@@ -3,7 +3,6 @@ import requests
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
-port = os.environ['PORT']
 
 
 @app.route('/')
@@ -12,14 +11,14 @@ def get_location():
     user_ip = request.remote_addr
     response = requests.get(f'https://ipinfo.io/{user_ip}/json', verify=False)
     user_ip_results = response.json()
-    latitude, longitude = user_ip_results.get('loc').split(',')
+    #latitude, longitude = user_ip_results.get('loc').split(',')
 
     weather_url = "https://atlas.microsoft.com/weather/currentConditions/json?" \
-                  f"api-version=1.0&query={latitude},{longitude}&" \
+                  f"api-version=1.0&query=47.60357,-122.32945&" \
                   "subscription-key=VCjx6AU_MxmuLPOfiXlqcF-M541X48W0IyvzbvMRGCQ"
 
     location_url = "https://atlas.microsoft.com/search/address/reverse/json?" \
-                   f"api-version=1.0&query={latitude},{longitude}&" \
+                   f"api-version=1.0&query=47.60357,-122.32945&" \
                    "subscription-key=VCjx6AU_MxmuLPOfiXlqcF-M541X48W0IyvzbvMRGCQ"
 
     weather_response = requests.get(weather_url, verify=False)
@@ -37,5 +36,5 @@ def get_location():
     return render_template('index.html', data=data)
 
 
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=port)
+if __name__ == "__main__":
+    app.run()
