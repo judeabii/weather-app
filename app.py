@@ -11,7 +11,7 @@ def get_location():
     user_ip = request.remote_addr
     response = requests.get(f'https://ipinfo.io/{user_ip}/json', verify=False)
     user_ip_results = response.json()
-    #latitude, longitude = user_ip_results.get('loc').split(',')
+    # latitude, longitude = user_ip_results.get('loc').split(',')
 
     weather_url = "https://atlas.microsoft.com/weather/currentConditions/json?" \
                   f"api-version=1.0&query=47.60357,-122.32945&" \
