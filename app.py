@@ -5,11 +5,15 @@ app = Flask(__name__)
 
 @app.route('/')
 def get_location():
+    user_ip = request.remote_addr
+    response = requests.get(f'https://ipinfo.io/{user_ip}/json', verify=False)
+    user_ip_results = response.json()
+    latitude,longitude=user_ip_results.get('loc').split(',')
     weather_url = "https://atlas.microsoft.com/weather/currentConditions/json?" \
                   f"api-version=1.0&query=47.60357,-122.32945&" \
                   "subscription-key=VCjx6AU_MxmuLPOfiXlqcF-M541X48W0IyvzbvMRGCQ"
     location_url = "https://atlas.microsoft.com/search/address/reverse/json?" \
-                   f"api-version=1.0&query=47.60357,-122.32945&" \
+                   f"api-version=1.0&query={latitude},{longitude}&" \
                    "subscription-key=VCjx6AU_MxmuLPOfiXlqcF-M541X48W0IyvzbvMRGCQ"
     weather_response = requests.get(weather_url, verify=False)
     location_response = requests.get(location_url, verify=False)
