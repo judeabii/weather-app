@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Static Weather Page</title>
+    <title>Weather App</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -33,11 +33,39 @@
         .conditions {
             font-size: 18px;
         }
+        .user-input {
+            margin-bottom: 10px;
+        .go-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
+    <script>
+        if ({{ show_alert }}) {
+            alert('Please enter a location or an email ID before clicking Go.');
+        }
+    </script>
+        <!-- Input fields for location and email -->
+    <form action="/user_location" method="post">
+    <div class="user-input">
+        <label for="location">Enter Location:</label>
+        <input type="text" id="location" name="location" placeholder="E.g., New York">
+    </div>
+    <div class="user-input">
+        <label for="email">Enter Email ID:</label>
+        <input type="email" id="email" name="email" placeholder="E.g., example@example.com">
+    </div>
+    <button type="submit" class="go-button">Go</button>
+    </form>
     <div class="weather-card">
-        <h1>Weather in New York</h1>
+        <h1>{{ data['header'] }}</h1>
         <div class="location">City: {{ data['city'] }}</div>
         <div class="location">Country: {{ data['country'] }}</div>
         <div class="temperature">Temperature: {{ data['temperature'] }}</div>
