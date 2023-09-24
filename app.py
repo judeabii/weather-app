@@ -12,7 +12,7 @@ def get_location():
     weather_result = weather_response.json()
 
     data = {
-        "weather": "Rain",
+        "weather": weather_result["results"][0]["phrase"],
         "city": "Bangalore",
         "country": "India",
         "temperature": "21",
