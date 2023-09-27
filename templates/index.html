@@ -62,8 +62,17 @@
         <label for="email">Enter Email ID:</label>
         <input type="email" id="email" name="email" placeholder="E.g., example@example.com">
     </div>
+        <input type="checkbox" id="checkbox" name="checkbox" value="checked">
+        <label for="checkbox"> Subscribe to weather alerts</label>
+        <br><br>
     <button type="submit" class="go-button">Go</button>
     </form>
+    {% if error %}
+    <p style= "color: red;">{{error}}</p>
+    {% endif %}
+    {% if message %}
+    <p style=" color:green;">{{message}}</p>
+    {% endif %}
     <div class="weather-card">
         <h1>{{ data['header'] }}</h1>
         <div class="location">City: {{ data['city'] }}</div>
