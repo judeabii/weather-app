@@ -76,7 +76,7 @@ def handle_click():
 
     msg = "Something went wrong.."
     if checkbox and email:
-        function_url = "http://localhost:7071/api/function1"
+        function_url = "https://weather-alerts2.azurewebsites.net/api/alert-func"
         func_body = {"email": email}
         func_response = requests.get(function_url, json=func_body)
         ack = func_response.json()
