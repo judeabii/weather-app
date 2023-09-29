@@ -38,7 +38,7 @@ def handle_click():
     location = request.form.get('location')
     email = request.form.get('email')
     checkbox = request.form.get('checkbox')
-    if (checkbox and not email) or not location:
+    if checkbox and not email:
         data = {
             "header": f"Weather in {sample_city}",
             "weather": sample_weather,
@@ -49,8 +49,19 @@ def handle_click():
         error = "Something went wrong.."
         if checkbox and not email:
             error = "Please enter your email to subscribe to alerts!"
-        elif not location:
-            error = "Please enter a location!"
+        return render_template('index.html', data=data, error=error)
+
+    if not location:
+        data = {
+            "header": f"Weather in {sample_city}",
+            "weather": sample_weather,
+            "city": sample_city,
+            "country": sample_country,
+            "temperature": sample_temperature
+        }
+        error = "Something went wrong.."
+        if checkbox and not email:
+            error = "Please enter a location before clicking Go!"
         return render_template('index.html', data=data, error=error)
 
     user_location_url = f"https://atlas.microsoft.com/search/address/json?&" \
