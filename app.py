@@ -46,9 +46,7 @@ def handle_click():
             "country": sample_country,
             "temperature": sample_temperature
         }
-        error = "Something went wrong.."
-        if checkbox and not email:
-            error = "Please enter your email to subscribe to alerts!"
+        error = "Please enter your email to subscribe to alerts!"
         return render_template('index.html', data=data, error=error)
 
     if not location:
@@ -59,9 +57,7 @@ def handle_click():
             "country": sample_country,
             "temperature": sample_temperature
         }
-        error = "Something went wrong.."
-        if checkbox and not email:
-            error = "Please enter a location before clicking Go!"
+        error = "Please enter a location before clicking Go!"
         return render_template('index.html', data=data, error=error)
 
     user_location_url = f"https://atlas.microsoft.com/search/address/json?&" \
@@ -85,7 +81,7 @@ def handle_click():
             "country": user_location_result["results"][0]["address"]["country"]
     }
 
-    msg = "Something went wrong.."
+    msg= ""
     if checkbox and email:
         function_url = "https://weather-alerts2.azurewebsites.net/api/alert-func"
         func_body = {"email": email}
