@@ -1,14 +1,32 @@
+import os
+from azure.identity import ClientSecretCredential
+from azure.keyvault.secrets import SecretClient
 from flask import Flask, render_template, request
+from dotenv import load_dotenv
 import requests
 
-app = Flask(__name__)
+load_dotenv()
+keyVaultName = os.getenv("AZ_KEYVAULT_NAME")
+client_id = os.getenv("AZURE_CLIENT_ID")
+tenant_id = os.getenv("AZURE_TENANT_ID")
+client_secret = os.getenv("AZURE_CLIENT_SECRET")
 
+app = Flask(__name__)
+kvUri = f"https://{keyVaultName}.vault.azure.net"
+credential = ClientSecretCredential(
+    client_id=client_id,
+    client_secret=client_secret,
+    tenant_id=tenant_id
+)
+client = SecretClient(vault_url=kvUri, credential=credential)
+azMapKey = client.get_secret("map-key")
+print(azMapKey.value)
 weather_url = "https://atlas.microsoft.com/weather/currentConditions/json?" \
               f"api-version=1.0&query=47.60357,-122.32945&" \
-              "subscription-key=VCjx6AU_MxmuLPOfiXlqcF-M541X48W0IyvzbvMRGCQ"
+              f"subscription-key={azMapKey.value}"
 location_url = "https://atlas.microsoft.com/search/address/reverse/json?" \
                f"api-version=1.0&query=47.60357,-122.32945&" \
-               "subscription-key=VCjx6AU_MxmuLPOfiXlqcF-M541X48W0IyvzbvMRGCQ"
+               f"subscription-key={azMapKey.value}"
 weather_response = requests.get(weather_url, verify=False)
 location_response = requests.get(location_url, verify=False)
 weather_result = weather_response.json()
@@ -61,29 +79,29 @@ def handle_click():
         return render_template('index.html', data=data, error=error)
 
     user_location_url = f"https://atlas.microsoft.com/search/address/json?&" \
-                            f"subscription-key=VCjx6AU_MxmuLPOfiXlqcF-M541X48W0IyvzbvMRGCQ&api-version=1.0&" \
-                            f"language=en-US&query={location}"
+                        f"subscription-key={azMapKey.value}&api-version=1.0&" \
+                        f"language=en-US&query={location}"
     user_location_response = requests.get(user_location_url, verify=False)
     user_location_result = user_location_response.json()
     user_latitude = user_location_result["results"][0]["position"]["lat"]
     user_longitude = user_location_result["results"][0]["position"]["lon"]
     user_weather_url = "https://atlas.microsoft.com/weather/currentConditions/json?" \
-                           f"api-version=1.0&query={user_latitude},{user_longitude}&" \
-                           "subscription-key=VCjx6AU_MxmuLPOfiXlqcF-M541X48W0IyvzbvMRGCQ"
+                       f"api-version=1.0&query={user_latitude},{user_longitude}&" \
+                       f"subscription-key={azMapKey.value}"
     user_weather_response = requests.get(user_weather_url, verify=False)
     user_weather_result = user_weather_response.json()
 
     data = {
-            "header": f"Weather in {user_location_result['results'][0]['address']['municipality']}",
-            "weather": user_weather_result["results"][0]["phrase"],
-            "temperature": user_weather_result["results"][0]["temperature"]["value"],
-            "city": user_location_result["results"][0]["address"]["municipality"],
-            "country": user_location_result["results"][0]["address"]["country"]
+        "header": f"Weather in {user_location_result['results'][0]['address']['municipality']}",
+        "weather": user_weather_result["results"][0]["phrase"],
+        "temperature": user_weather_result["results"][0]["temperature"]["value"],
+        "city": user_location_result["results"][0]["address"]["municipality"],
+        "country": user_location_result["results"][0]["address"]["country"]
     }
 
-    msg= ""
+    msg = ""
     if checkbox and email:
-        function_url = "https://weather-alerts2.azurewebsites.net/api/alert-func"
+        function_url = os.getenv("FUNCTION_URL")
         func_body = {"email": email}
         func_response = requests.get(function_url, json=func_body)
         ack = func_response.json()
