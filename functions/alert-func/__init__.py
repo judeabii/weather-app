@@ -1,6 +1,12 @@
 import azure.functions as func
 from azure.communication.email import EmailClient
 import json
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+connection_string = os.getenv("MAPS_CONNECTION_STRING")
 
 
 def main(request: func.HttpRequest) -> func.HttpResponse:
@@ -9,9 +15,6 @@ def main(request: func.HttpRequest) -> func.HttpResponse:
         user_email = user_request['email']
 
         try:
-            connection_string = "endpoint=https://send-weather-alerts.unitedstates.communication.azure.com/;accesskey" \
-                                "=qB1kgAINytNk2MW7YtBkV/RkYm2+nTIOMKE8GPJ6y6lg/97ABgLNF/L/Z3rRXjr8KNQlq" \
-                                "/30umzf29g1ZbcnUQ=="
             client = EmailClient.from_connection_string(connection_string)
 
             message = {
