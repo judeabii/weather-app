@@ -1,13 +1,16 @@
 # weather-app
-A weather app using Azure services.
+A weather app using Azure services, demonstrating the seamless integration of 
+various Azure services to deliver a comprehensive weather information solution. 
+Users can get accurate weather updates and subscribe to personalized alerts, 
+while Azure services handle the heavy lifting behind the scenes.
 
 Azure resources used: 
-- Azure Web App
-- Azure Functions
-- Azure Maps Account
-- Azure Communication Service
-- Azure Key Vault
-- Azure Entra ID (AD)
+- **Azure Web App**: Hosts the weather application.
+- **Azure Functions**: Provides serverless functions for email notifications and backend tasks.
+- **Azure Maps Account**: Offers powerful geospatial capabilities for location data.
+- **Azure Communication Service**: Enables automated subscription emails.
+- **Azure Key Vault**: Securely stores connection strings and secrets.
+- **Azure Entra ID (Azure AD)**: Manages Service Principals for secure access.
 
 The above resources were created using both, CLI
 and the Azure Portal.
@@ -19,16 +22,11 @@ az login
 az group create --name weatherapp-rg --location eastus
 ```
 ### Creating the Web App in Azure Portal
-
 - In the left-hand menu, click on "Create a resource."
 - In the search bar, type "Web App" and select "Web App" from the results.
 - Click the "Create" button.
 - Fill in the details for your Web App, including the App name, Subscription, Resource Group, and App Service plan.
-Runtime stack is Python. 
-- Click "Next: Monitoring" to configure monitoring settings if needed.
-- Click "Next: Tags" to add tags (optional).
-- Click "Review + create."
-- Review the configuration details, and if everything looks correct, click "Create" to create the Web App.
+Runtime stack is Python for this use-case.
 
 Configure GitHub Actions to actively deploy your web app code to Azure, as you commit to
 the main branch
@@ -59,8 +57,6 @@ To deploy your function app to Azure:
 func azure functionapp publish FUNCTION_APP_NAME
 ```
 ### Azure Maps Account
-In this particular use case, we will be using this Azure service to obtain
-powerful geospatial capabilities.
 In this web application, we use this service to:
 - Get latitude and longitude data of the location entered by the user via fuzzy
 search
@@ -130,5 +126,5 @@ alerts is sent using Azure Functions, with a HTTP trigger:
 ![](/images/alert-email.PNG)
 
 ### Deployment
-Deployment of the Web App to Azure is done using GitHub actions, in which 
-all the specifications are mentioned in a yaml file.
+Deployment of the web app is automated through GitHub Actions, with 
+all specifications defined in a YAML file.
