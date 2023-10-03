@@ -122,12 +122,12 @@ azMapKey = client.get_secret("map-key")
 Once all the Azure resources are up, running and working together, we can see their
 application through a sample web app that gives us the weather for any location
 and allows users to subscribe to weather alerts.
-![](/images/web-app.png)
+![](/images/web-app.PNG)
 After the user enters any location and email:
-![](/images/web-app-user.png)
+![](/images/web-app-user.PNG)
 The automated email that is generated to the user after subscribing to the 
 alerts is sent using Azure Functions, with a HTTP trigger:
-![](/images/alert-email.png)
+![](/images/alert-email.PNG)
 
 ### Deployment
 Deployment of the Web App to Azure is done using GitHub actions, in which 
